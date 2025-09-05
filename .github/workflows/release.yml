@@ -1,0 +1,54 @@
+name: Build and Release
+
+on:
+  release:
+    types: [ published ]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    if: github.event_name == 'release'
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-latest
+            artifact_name: bft-${{ github.event.release.tag_name }}-linux
+            exe_ext: ""
+          - os: macos-latest
+            artifact_name: bft-${{ github.event.release.tag_name }}-macos
+            exe_ext: ""
+          - os: windows-latest
+            artifact_name: bft-${{ github.event.release.tag_name }}-windows
+            exe_ext: ".exe"
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Install build tools (Linux/macOS)
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          if [ "${{ runner.os }}" == "Linux" ]; then
+            sudo apt-get update
+            sudo apt-get install -y build-essential
+          elif [ "${{ runner.os }}" == "macOS" ]; then
+            brew install gcc
+          fi
+
+      - name: Compile artifacts
+        run: |
+          mkdir -p bin
+          gcc -Iinclude -O2 -Wall src/*.c -o bin/bft${{ matrix.exe_ext }}
+
+      - name: Rename artifacts
+        run: mv bin/bft${{ matrix.exe_ext }} bin/${{ matrix.artifact_name }}
+
+      - name: Upload release assets
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ github.event.release.tag_name }} bin/${{ matrix.artifact_name }} --clobber
+      
