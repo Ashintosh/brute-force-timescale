@@ -49,6 +49,7 @@ This will create:
 | Option                | Description                                                            |
 | --------------------- | ---------------------------------------------------------------------- |
 | `--help`              | Show help message and exit                                             |
+| `--version`           | Show binary version                                                    |
 | `--parts <number>`    | Number of 64-bit parts in the counter (default: 2)                     |
 | `--gps <number>`      | Target guesses per second (ignored in high-speed mode, default: 10000) |
 | `--highspeed`         | Enable high-speed mode                                                 |
