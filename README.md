@@ -11,6 +11,12 @@ A simple demo to show how long it would take to check every iteration of a possi
 - Real-time display of elapsed time, total attempts, and actual guess rate
 - Command-line options with `--help` for usage
 
+### Example
+![example](images/example.gif)
+
+### High-speed example
+![hs-example](images/hs-example.gif)
+
 ---
 
 ## Build Instructions
