@@ -45,14 +45,14 @@ jobs:
           gcc -Iinclude -O2 -Wall src/*.c -o bin/bft${{ matrix.exe_ext }}
 
       - name: Rename binaries
-        run: mv bin/bft${{ matrix.exe_ext }} bin/${{ matrix.artifact_name }}
+        run: mv bin/bft${{ matrix.exe_ext }} bin/${{ matrix.artifact_name }}${{ matrix.exe_ext }}
 
       - name: Make Linux/macOS binaries executable
         if: runner.os != 'Windows'
-        run: chmod +x bin/${{ matrix.artifact_name }}
+        run: chmod +x bin/${{ matrix.artifact_name }}${{ matrix.exe_ext }}
 
       - name: Upload release binaries
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ github.event.release.tag_name }} bin/${{ matrix.artifact_name }} --clobber
+        run: gh release upload ${{ github.event.release.tag_name }} bin/${{ matrix.artifact_name }}${{ matrix.exe_ext }} --clobber
       
