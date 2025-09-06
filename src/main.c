@@ -39,7 +39,6 @@ void display_counter(const Config *cfg, unsigned long long *counter,
     else print_binary(counter, cfg->parts, buf, sizeof(buf));
 
     if (cfg->high_speed_mode) {
-        printf("\n\n");
         printf("\033[2F");                  // Move cursor up 2 lines
         printf("\033[K%s\n", buf);          // Clear line and print counter
         printf("\033[KElapsed: %.2fs | Attempts: %llu | Actual rate: %.2f guesses/s\n",

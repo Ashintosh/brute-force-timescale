@@ -39,15 +39,19 @@ jobs:
             brew install gcc
           fi
 
-      - name: Compile artifacts
+      - name: Compile binaries
         run: |
           mkdir -p bin
           gcc -Iinclude -O2 -Wall src/*.c -o bin/bft${{ matrix.exe_ext }}
 
-      - name: Rename artifacts
+      - name: Make Linux/macOS binaries executable
+        if: runner.os != 'Windows'
+        run: chmod +x bin/${{ matrix.artifact_name }}
+
+      - name: Rename binaries
         run: mv bin/bft${{ matrix.exe_ext }} bin/${{ matrix.artifact_name }}
 
-      - name: Upload release assets
+      - name: Upload release binaries
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ github.event.release.tag_name }} bin/${{ matrix.artifact_name }} --clobber

@@ -14,5 +14,6 @@ typedef struct {
 
 void parse_args(int argc, char **argv, Config *cfg);
 void print_help(const char *prog_name);
+void print_version(const char *prog_name);
 
 #endif // CONFIG_H
